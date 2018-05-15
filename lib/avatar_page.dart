@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'avatar.dart';
 
 class AvatarPage extends StatefulWidget {
   @override
@@ -21,15 +22,25 @@ class _AvatarPageState extends State<AvatarPage> {
 
   @override
   Widget build(BuildContext context) {
+    var children = [
+      _buildInputForm(),
+    ];
+    if (_name.length > 0) {
+      var url = 'https://robohash.org/$_name';
+      var avatar = new Avatar(url: url, size: 150.0);
+      children.addAll([
+        new VerticalPadding(child: avatar),
+        new VerticalPadding(child: new Text('Courtesy of robohash.org')),
+      ]);
+    }
+
     return new Scaffold(
       appBar: new AppBar(title: new Text('Greeting, Robot')),
       body: new Container(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: new Center(
           child: new Column(
-            children: <Widget>[
-              _buildInputForm(),
-            ],
+            children: children,
           ),
         ),
       ),
