@@ -11,6 +11,8 @@ class _AvatarPageState extends State<AvatarPage> {
 
   String _name = '';
 
+  FocusNode _focusNode = new FocusNode();
+
   void _updateName(String name) {
     final form = formKey.currentState;
     if (form.validate()) {
@@ -18,6 +20,12 @@ class _AvatarPageState extends State<AvatarPage> {
       setState(() {});
       print('Saved: $_name');
     }
+  }
+
+  void _clear() {
+    final form = formKey.currentState;
+    form.reset();
+    FocusScope.of(context).requestFocus(_focusNode);
   }
 
   @override
@@ -33,6 +41,17 @@ class _AvatarPageState extends State<AvatarPage> {
         new VerticalPadding(child: new Text('Courtesy of robohash.org')),
       ]);
     }
+
+    children.addAll([
+      new Expanded(child: Container()),
+      new Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+        new VerticalPadding(
+            child: new FlatButton(
+          child: new Text('Clear', style: new TextStyle(fontSize: 24.0)),
+          onPressed: _clear,
+        ))
+      ])
+    ]);
 
     return new Scaffold(
       appBar: new AppBar(title: new Text('Greeting, Robot')),
@@ -51,6 +70,7 @@ class _AvatarPageState extends State<AvatarPage> {
     var children = [
       new VerticalPadding(
           child: new TextFormField(
+        focusNode: _focusNode,
         decoration: new InputDecoration(
           labelText: 'Enter your unique identifier',
           labelStyle: new TextStyle(fontSize: 20.0),
